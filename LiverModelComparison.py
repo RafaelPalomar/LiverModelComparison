@@ -14,6 +14,7 @@ from vtk import vtkActor2D
 from vtk import vtkPolyDataMapper2D
 from vtk import vtkCoordinate
 from vtk import vtkTextActor
+from vtk import vtkProperty
 
 scene_elements =['parenchyma','hepatic','portal','tumor']
 
@@ -65,6 +66,31 @@ if __name__ == '__main__':
 
     args = parse_arguments()
 
+    properties = {}
+    #Parenchyma
+    properties[scene_elements[0]] = vtkProperty()
+    properties[scene_elements[0]].SetColor(221/256.0, 130/256.0, 101/256.0)
+    properties[scene_elements[0]].SetOpacity(0.3);
+    properties[scene_elements[0]].BackfaceCullingOn();
+
+    #Hepatic
+    properties[scene_elements[1]] = vtkProperty()
+    properties[scene_elements[1]].SetColor(1.0, 0.0, 0.0)
+    properties[scene_elements[1]].SetOpacity(1.0);
+    properties[scene_elements[1]].BackfaceCullingOn();
+    
+    #Portal
+    properties[scene_elements[2]] = vtkProperty()
+    properties[scene_elements[2]].SetColor(0, 0, 1.0)
+    properties[scene_elements[2]].SetOpacity(1);
+    properties[scene_elements[2]].BackfaceCullingOn();
+
+    #Tumor
+    properties[scene_elements[3]] = vtkProperty()
+    properties[scene_elements[3]].SetColor(205/256.0, 204/256.0, 102/256.0)
+    properties[scene_elements[3]].SetOpacity(1.0);
+    properties[scene_elements[3]].BackfaceCullingOn();
+    
     renderer_a = vtkRenderer()
     renderer_a.SetViewport(0.0, 0.0, 0.5, 1.0)
     renderer_a.GradientBackgroundOn()
@@ -108,10 +134,12 @@ if __name__ == '__main__':
 
         scene_a_actors[i] = vtkActor()
         scene_a_actors[i].SetMapper(scene_a_mappers[i])
+        scene_a_actors[i].SetProperty(properties[i])
 
         scene_b_actors[i] = vtkActor()
         scene_b_actors[i].SetMapper(scene_b_mappers[i])
-
+        scene_b_actors[i].SetProperty(properties[i])
+        
         renderer_a.AddActor(scene_a_actors[i])
         renderer_b.AddActor(scene_b_actors[i])
 
